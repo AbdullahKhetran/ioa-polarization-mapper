@@ -22,12 +22,21 @@ def show_results(response: dict):
 
     st.divider()
 
-    # Cluster Breakdown
     st.subheader("Cluster Breakdown")
     for cluster in response["clusters"]:
         with st.expander(f"{cluster['label']} examples ({cluster['share']}%)"):
-            for ex in cluster['examples']:
-                st.markdown(f"> {ex}")
+            for i, ex in enumerate(cluster['examples']):
+                # Take first 7 words as preview
+                preview = " ".join(ex.split()[:7])
+                if len(ex.split()) > 7:
+                    preview += "..."
+
+                # Dummy link (could be replaced with actual URL later)
+                post_url = f"https://example.com/post/{i}"
+
+                st.markdown(
+                    f"- {preview} [View post]({post_url})"
+                )
 
     st.divider()
 

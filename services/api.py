@@ -1,7 +1,12 @@
 import requests
 from typing import Dict, Any
+import os
+from dotenv import load_dotenv
 
-BACKEND_URL = "http://127.0.0.1:8000"
+
+load_dotenv()
+# fallback to localhost
+BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000")
 
 
 def get_polarization_score(topic: str) -> Dict[str, Any]:

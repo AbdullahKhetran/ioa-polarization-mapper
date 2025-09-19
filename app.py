@@ -1,6 +1,7 @@
 import streamlit as st
+from typing import Dict, Any
 from components.results import show_results
-from services.api import analyze_topic
+from services.api import get_polarization_score
 
 st.set_page_config(page_title="Polarization Mapper")
 st.title("Polarization Mapper")
@@ -9,15 +10,15 @@ st.title("Polarization Mapper")
 topics = ["Climate Change", "AI Regulation", "Universal Basic Income"]
 
 # Dropdown to choose
-selected_topic = st.selectbox("Choose a topic:", topics)
+selected_topic: str = st.selectbox("Choose a topic:", topics)
 
 # Get data
-response = analyze_topic(selected_topic)
+response: Dict[str, Any] = get_polarization_score(selected_topic)
 
 if response:
     show_results(response)
 
-
 # --- Footer ---
 st.caption(
-    "Built at [Internet of Agents Hackathon](https://lablab.ai/event/internet-of-agents) by [Super Agents](https://lablab.ai/event/internet-of-agents/super-agents)")
+    "Built at [Internet of Agents Hackathon](https://lablab.ai/event/internet-of-agents) by [Super Agents](https://lablab.ai/event/internet-of-agents/super-agents)"
+)

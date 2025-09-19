@@ -1,10 +1,11 @@
 import streamlit as st
-import plotly.express as px  # type: ignore
+from typing import Dict, Any
 from components.charts import cluster_pie_chart
 
 
-def show_results(response: dict):
-    if not response:
+def show_results(response: Dict[str, Any]) -> None:
+    if not response or "error" in response:
+        st.error(response.get("error", "No data available"))
         return
 
     st.subheader(f"Results for: **{response['topic']}**")
@@ -25,18 +26,13 @@ def show_results(response: dict):
     st.subheader("Cluster Breakdown")
     for cluster in response["clusters"]:
         with st.expander(f"{cluster['label']} examples ({cluster['share']}%)"):
-            for i, ex in enumerate(cluster['examples']):
-                # Take first 7 words as preview
+            for i, ex in enumerate(cluster["examples"]):
                 preview = " ".join(ex.split()[:7])
                 if len(ex.split()) > 7:
                     preview += "..."
 
-                # Dummy link (could be replaced with actual URL later)
                 post_url = f"https://example.com/post/{i}"
-
-                st.markdown(
-                    f"- {preview} [View post]({post_url})"
-                )
+                st.markdown(f"- {preview} [View post]({post_url})")
 
     st.divider()
 

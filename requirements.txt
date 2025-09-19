@@ -2,3 +2,6 @@ streamlit
 plotly
 requests
 typing-extensions
+pip
+dotenv
+openai

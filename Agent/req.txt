@@ -1,0 +1,3 @@
+pip
+dotenv
+openai

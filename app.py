@@ -7,16 +7,17 @@ st.set_page_config(page_title="Polarization Mapper")
 st.title("Polarization Mapper")
 
 # Predefined topics
-topics = ["Climate Change", "AI Regulation", "Universal Basic Income"]
+topics: list[str] = ["Climate Change",
+                     "AI Regulation", "Universal Basic Income"]
 
 # Dropdown to choose
 selected_topic: str = st.selectbox("Choose a topic:", topics)
 
-# Get data
-response: Dict[str, Any] = get_polarization_score(selected_topic)
-
-if response:
-    show_results(response)
+# Button to trigger analysis
+if st.button("Analyze"):
+    response: Dict[str, Any] = get_polarization_score(selected_topic)
+    if response:
+        show_results(response)
 
 # --- Footer ---
 st.caption(

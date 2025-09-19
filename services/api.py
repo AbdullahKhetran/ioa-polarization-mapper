@@ -1,12 +1,9 @@
 import requests
 from typing import Dict, Any
-import os
-from dotenv import load_dotenv
+import streamlit as st
 
 
-load_dotenv()
-BACKEND_URL = os.getenv("BACKEND_URL")
-# BACKEND_URL = "http://127.0.0.1:8000"
+BACKEND_URL = st.secrets["BACKEND_URL"]
 
 
 def get_polarization_score(topic: str) -> Dict[str, Any]:

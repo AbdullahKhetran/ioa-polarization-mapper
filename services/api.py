@@ -1,18 +1,28 @@
 import requests
 from typing import Dict, Any
 import streamlit as st
+import jwt
+import time
 
 
 BACKEND_URL = st.secrets["BACKEND_URL"]
-BACKEND_API_KEY = st.secrets["BACKEND_API_KEY"]
+JWT_SECRET = st.secrets["JWT_SECRET"]
+JWT_ALGORITHM = "HS256"
+
+
+def get_jwt():
+    payload = {
+        "iss": "frontend",
+        "exp": int(time.time()) + 60 * 5  # 5 min expiry
+    }
+    token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+    return token
 
 
 def get_polarization_score(topic: str) -> Dict[str, Any]:
+    token = get_jwt()
+    headers = {"Authorization": f"Bearer {token}"}
     payload = {"topic": topic}
-    headers = {
-        "Authorization": BACKEND_API_KEY,
-        "Content-Type": "application/json"
-    }
 
     try:
         response = requests.post(

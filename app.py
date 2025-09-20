@@ -1,7 +1,15 @@
 import streamlit as st
 from typing import Dict, Any
-from components.results import show_results
-from services.api import get_polarization_score
+from services.api import get_polarization_score, get_example_posts
+# from dotenv import load_dotenv  # for localhost
+# import os  # for localhost
+
+
+# # for localhost
+# load_dotenv()
+# BACKEND_URL = os.getenv("BACKEND_URL")
+
+BACKEND_URL = st.secrets["BACKEND_URL"]
 
 st.set_page_config(page_title="Polarization Mapper")
 st.title("Polarization Mapper")
@@ -31,9 +39,21 @@ if st.button("Analyze"):
         st.info(f"Selected Method: **{selected_method}**")
         st.caption(f"Reason: {reason}")
 
-        # Optional: display clusters if your backend sends them
-        if "clusters" in response:
-            show_results(response)
+        # --- Example posts ---
+        st.subheader("Example Posts")
+        example_ids = response.get("example_post_ids", [])
+
+        if example_ids:
+            posts = get_example_posts(example_ids, selected_topic)
+            if posts:
+                for post in posts:
+                    text = post.get("text") or post.get("title") or "[No text]"
+                    url = post.get("url", "#")
+                    st.markdown(f"{text[:100]}... [view post]({url})")
+            else:
+                st.write("No posts found for the returned IDs.")
+        else:
+            st.write("No example posts returned by AI.")
 
     elif response and "error" in response:
         st.error(f"Error: {response['error']}")

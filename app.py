@@ -25,7 +25,6 @@ selected_topic: str = st.selectbox("Choose a topic:", topics)
 # Button to trigger analysis
 if st.button("Analyze"):
     response = get_polarization_score(selected_topic)
-    print("analyze response", response)
 
     if response and "error" not in response:
         # Restructure backend data
@@ -43,8 +42,6 @@ if st.button("Analyze"):
         # --- Example posts ---
         st.subheader("Example Posts")
         example_ids = response.get("example_post_ids", [])
-
-        print("example ids", example_ids)
 
         if example_ids:
             posts = get_example_posts(example_ids, selected_topic)

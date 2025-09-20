@@ -52,7 +52,6 @@ def get_example_posts(ids: list[str], topic: str):
     headers = {"Authorization": f"Bearer {token}"}
     url = f"{BACKEND_URL}/fetch-posts"
     payload = {"ids": ids, "topic": topic}
-    print("get example posts function: token, url, payload", token, url, payload)
 
     try:
         response = requests.post(url, json=payload, headers=headers)

@@ -3,6 +3,13 @@ from typing import Dict, Any
 import streamlit as st
 import jwt
 import time
+from dotenv import load_dotenv
+import os
+
+# # for localhost
+# load_dotenv()
+# BACKEND_URL = os.getenv("BACKEND_URL")
+# JWT_SECRET = os.getenv("JWT_SECRET")
 
 
 BACKEND_URL = st.secrets["BACKEND_URL"]

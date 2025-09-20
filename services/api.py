@@ -3,8 +3,8 @@ from typing import Dict, Any
 import streamlit as st
 import jwt
 import time
-from dotenv import load_dotenv
-import os
+# from dotenv import load_dotenv # for localhost
+# import os # for localhost
 
 # # for localhost
 # load_dotenv()
@@ -33,10 +33,15 @@ def get_polarization_score(topic: str) -> Dict[str, Any]:
 
     try:
         response = requests.post(
-            f"{BACKEND_URL}/analyze", json=payload, headers=headers)
+            f"{BACKEND_URL}/analyze",
+            json=payload,
+            headers=headers
+        )
+
         if response.status_code == 200:
             return response.json()
         else:
             return {"error": f"Backend error {response.status_code}"}
+
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}

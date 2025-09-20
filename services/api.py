@@ -48,10 +48,16 @@ def get_polarization_score(topic: str) -> Dict[str, Any]:
 
 
 def get_example_posts(ids: list[str], topic: str):
+    token = get_jwt()
+    headers = {"Authorization": f"Bearer {token}"}
     url = f"{BACKEND_URL}/fetch-posts"
     payload = {"ids": ids, "topic": topic}
-    response = requests.post(url, json=payload)
-    if response.status_code == 200:
-        return response.json().get("posts", [])
-    else:
+
+    try:
+        response = requests.post(url, json=payload, headers=headers)
+        if response.status_code == 200:
+            return response.json().get("posts", [])
+        else:
+            return []
+    except requests.exceptions.RequestException:
         return []

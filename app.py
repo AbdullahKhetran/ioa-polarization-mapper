@@ -27,19 +27,12 @@ with col2:
                                  "AI Regulation", "Universal Basic Income"]
     selected_popular = st.selectbox("Choose a popular topic:", popular_topics)
 
-# Predefined topics
-topics: list[str] = ["Climate Change",
-                     "AI Regulation", "Universal Basic Income"]
-
-# Dropdown to choose
-selected_topic: str = st.selectbox("Choose a topic:", topics)
-
 
 # Button to trigger analysis
 if st.button("Analyze"):
 
-    topic_to_analyze = user_topic.strip() if user_topic.strip() else selected_popular
-    response = get_polarization_score(topic_to_analyze)
+    topic = user_topic.strip() if user_topic.strip() else selected_popular
+    response = get_polarization_score(topic)
 
     if response and "error" not in response:
         # Restructure backend data
@@ -48,7 +41,7 @@ if st.button("Analyze"):
         polarization_score = response.get("polarization_score", 0.0)
 
         # Display results in frontend
-        st.subheader(f"Results for: {selected_topic}")
+        st.subheader(f"Results for: {topic}")
         st.metric(label="Polarization Score",
                   value=f"{polarization_score*100:.1f}%")
         st.info(f"Selected Method: **{selected_method}**")
@@ -59,7 +52,7 @@ if st.button("Analyze"):
         example_ids = response.get("example_post_ids", [])
 
         if example_ids:
-            posts = get_example_posts(example_ids, selected_topic)
+            posts = get_example_posts(example_ids, topic)
             if posts:
                 for post in posts:
                     text = post.get("text") or post.get("title") or "[No text]"

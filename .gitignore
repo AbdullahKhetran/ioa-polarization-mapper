@@ -41,3 +41,4 @@ pip-delete-this-directory.txt
 
 # User added
 tasks.txt
+.streamlit

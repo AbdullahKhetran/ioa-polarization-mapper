@@ -14,6 +14,19 @@ BACKEND_URL = st.secrets["BACKEND_URL"]
 st.set_page_config(page_title="Polarization Mapper")
 st.title("Polarization Mapper")
 
+# Two columns layout
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("Custom Topic")
+    user_topic = st.text_input("Enter your own topic:")
+
+with col2:
+    st.subheader("Popular Topics")
+    popular_topics: list[str] = ["Climate Change",
+                                 "AI Regulation", "Universal Basic Income"]
+    selected_popular = st.selectbox("Choose a popular topic:", popular_topics)
+
 # Predefined topics
 topics: list[str] = ["Climate Change",
                      "AI Regulation", "Universal Basic Income"]
@@ -24,7 +37,9 @@ selected_topic: str = st.selectbox("Choose a topic:", topics)
 
 # Button to trigger analysis
 if st.button("Analyze"):
-    response = get_polarization_score(selected_topic)
+
+    topic_to_analyze = user_topic.strip() if user_topic.strip() else selected_popular
+    response = get_polarization_score(topic_to_analyze)
 
     if response and "error" not in response:
         # Restructure backend data

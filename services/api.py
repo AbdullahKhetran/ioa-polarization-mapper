@@ -9,7 +9,10 @@ BACKEND_API_KEY = st.secrets["BACKEND_API_KEY"]
 
 def get_polarization_score(topic: str) -> Dict[str, Any]:
     payload = {"topic": topic}
-    headers = {"Authorization": BACKEND_API_KEY}
+    headers = {
+        "Authorization": BACKEND_API_KEY,
+        "Content-Type": "application/json"
+    }
 
     try:
         response = requests.post(
